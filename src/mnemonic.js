@@ -7,8 +7,8 @@ function generateEntropy() {
     return entropy;
 }
 
-function entropyToMnemonic(entropyBits) {
-    let bits = entropyBits.slice(0, 154);
+function entropyToMnemonic(entropy) {
+    let bits = entropy.slice(0, 154);
 
     const words = [];
     for (let i = 0; i < bits.length; i += 11) {
@@ -31,6 +31,9 @@ function createChecksum(bits) {
 }
 
 function verifyChecksum(bits) {
+    if (!bits) {
+        throw new Error(`Parameter 'bits' is required.`)
+    }
     const entropyBits = bits.slice(0, 149);
     const checksum = bits.slice(149);
     const hash = crypto.createHash('sha256').update(Buffer.from(entropyBits, 'binary')).digest();
@@ -43,6 +46,9 @@ function verifyChecksum(bits) {
 }
 
 function mnemonicToEntropy(mnemonic) {
+    if (!mnemonic) {
+        throw new Error(`Parameter 'mnemonic' is required.`)
+    }
     const words = mnemonic.split(' ');
     let bits = '';
     words.forEach(word => {
@@ -54,6 +60,9 @@ function mnemonicToEntropy(mnemonic) {
 }
 
 function validateMnemonic(mnemonic) {
+    if (!mnemonic) {
+        throw new Error(`Parameter 'mnemonic' is required.`)
+    }
     const entropyBits = mnemonicToEntropy(mnemonic);
     const validated = verifyChecksum(entropyBits);
     if (validated === true) {
