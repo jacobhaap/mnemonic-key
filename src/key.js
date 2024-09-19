@@ -3,6 +3,9 @@ const { mnemonicToEntropy, validateMnemonic } = require('./mnemonic');
 const { base58 } = require('@scure/base');
 
 async function createKey(mnemonic) {
+    if (!mnemonic) {
+        throw new Error(`Parameter 'mnemonic' is required.`)
+    }
     const wordArray = mnemonic.split(' ');
     if (wordArray.length !== 14) {
         throw new Error('Exactly 14 words are required');
