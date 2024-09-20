@@ -99,4 +99,4 @@ function mnemonicGenerator(providedEntropy = null) {
     }
 }
 
-module.exports = { mnemonicGenerator, mnemonicToEntropy, verifyChecksum, validateMnemonic };
+module.exports = { mnemonicGenerator, mnemonicToEntropy, validateMnemonic };
