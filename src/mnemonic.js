@@ -1,5 +1,6 @@
 const crypto = require('crypto');
-const { wordlist } = require('@scure/bip39/wordlists/english');
+const { toMnemonic, toEntropy } = require('@iacobus/bip39')
+const { wordlist } = require('@iacobus/bip39/wordlists/english');
 
 function generateEntropy() {
     const entropyBuffer = crypto.randomBytes(32);
@@ -8,14 +9,10 @@ function generateEntropy() {
 }
 
 function entropyToMnemonic(entropy) {
-    let bits = entropy.slice(0, 154);
+    const bits = entropy.slice(0, 154);
+    const result = toMnemonic(wordlist, bits);
 
-    const words = [];
-    for (let i = 0; i < bits.length; i += 11) {
-        const index = parseInt(bits.slice(i, i + 11), 2);
-        words.push(wordlist[index]);
-    }
-    return words.join(' ');
+    return result;
 }
 
 function createChecksum(bits) {
@@ -49,18 +46,9 @@ function mnemonicToEntropy(mnemonicPhrase) {
     if (!mnemonicPhrase) {
         throw new Error(`Parameter 'mnemonicPhrase' is required.`)
     }
-    const wordArray = mnemonicPhrase.split(' ');
-    if (wordArray.length !== 14) {
-        throw new Error('Exactly 14 words are required');
-    }
-    const words = mnemonicPhrase.split(' ');
-    let bits = '';
-    words.forEach(word => {
-        const index = wordlist.indexOf(word);
-        bits += index.toString(2).padStart(11, '0');
-    });
+    const result = toEntropy(wordlist, mnemonicPhrase);
 
-    return bits;
+    return result;
 }
 
 function validateMnemonic(mnemonicPhrase) {
@@ -95,7 +83,7 @@ function mnemonicGenerator(providedEntropy = null) {
     let bits = Array.from(entropy)
         .map(byte => byte.toString(2).padStart(8, '0'))
         .join('');
-    bits = bits.slice(0, 154);
+    bits = bits.slice(0, 149);
 
     const checksummedBits = createChecksum(bits);
     const mnemonic = entropyToMnemonic(checksummedBits);
