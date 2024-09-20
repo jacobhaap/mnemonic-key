@@ -45,15 +45,15 @@ function verifyChecksum(bits) {
     return checksum === calculatedChecksum;
 }
 
-function mnemonicToEntropy(mnemonic) {
-    if (!mnemonic) {
-        throw new Error(`Parameter 'mnemonic' is required.`)
+function mnemonicToEntropy(mnemonicPhrase) {
+    if (!mnemonicPhrase) {
+        throw new Error(`Parameter 'mnemonicPhrase' is required.`)
     }
-    const wordArray = mnemonic.split(' ');
+    const wordArray = mnemonicPhrase.split(' ');
     if (wordArray.length !== 14) {
         throw new Error('Exactly 14 words are required');
     }
-    const words = mnemonic.split(' ');
+    const words = mnemonicPhrase.split(' ');
     let bits = '';
     words.forEach(word => {
         const index = wordlist.indexOf(word);
@@ -63,15 +63,15 @@ function mnemonicToEntropy(mnemonic) {
     return bits;
 }
 
-function validateMnemonic(mnemonic) {
-    if (!mnemonic) {
-        throw new Error(`Parameter 'mnemonic' is required.`)
+function validateMnemonic(mnemonicPhrase) {
+    if (!mnemonicPhrase) {
+        throw new Error(`Parameter 'mnemonicPhrase' is required.`)
     }
-    const wordArray = mnemonic.split(' ');
+    const wordArray = mnemonicPhrase.split(' ');
     if (wordArray.length !== 14) {
         throw new Error('Exactly 14 words are required');
     }
-    const entropyBits = mnemonicToEntropy(mnemonic);
+    const entropyBits = mnemonicToEntropy(mnemonicPhrase);
     const validated = verifyChecksum(entropyBits);
     if (validated === true) {
         return validated;

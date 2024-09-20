@@ -9,16 +9,16 @@ function mnemonic(entropy = null) {
     }
 }
 
-mnemonic.toEntropy = function(mnemonic) {
-    return mnemonicToEntropy(mnemonic);
+mnemonic.toEntropy = function(mnemonicPhrase) {
+    return mnemonicToEntropy(mnemonicPhrase);
 }
 
-mnemonic.validate = function(mnemonic) {
-    return validateMnemonic(mnemonic);
+mnemonic.validate = function(mnemonicPhrase) {
+    return validateMnemonic(mnemonicPhrase);
 }
 
-async function key(mnemonic) {
-    return createKey(mnemonic);
+async function getKey(mnemonicPhrase, iterations = null) {
+    return createKey(mnemonicPhrase, iterations);
 }
 
-module.exports = { key, mnemonic }
+module.exports = { getKey, mnemonic }
