@@ -49,6 +49,10 @@ function mnemonicToEntropy(mnemonic) {
     if (!mnemonic) {
         throw new Error(`Parameter 'mnemonic' is required.`)
     }
+    const wordArray = mnemonic.split(' ');
+    if (wordArray.length !== 14) {
+        throw new Error('Exactly 14 words are required');
+    }
     const words = mnemonic.split(' ');
     let bits = '';
     words.forEach(word => {
@@ -62,6 +66,10 @@ function mnemonicToEntropy(mnemonic) {
 function validateMnemonic(mnemonic) {
     if (!mnemonic) {
         throw new Error(`Parameter 'mnemonic' is required.`)
+    }
+    const wordArray = mnemonic.split(' ');
+    if (wordArray.length !== 14) {
+        throw new Error('Exactly 14 words are required');
     }
     const entropyBits = mnemonicToEntropy(mnemonic);
     const validated = verifyChecksum(entropyBits);
