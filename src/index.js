@@ -1,9 +1,5 @@
-const createKey = require('./key');
 const { mnemonicGenerator, mnemonicToEntropy, validateMnemonic } = require('./mnemonic');
-
-async function key(mnemonic) {
-    return createKey(mnemonic);
-}
+const createKey = require('./key');
 
 function mnemonic(entropy = null) {
     if (entropy != null) {
@@ -19,6 +15,10 @@ mnemonic.toEntropy = function(mnemonic) {
 
 mnemonic.validate = function(mnemonic) {
     return validateMnemonic(mnemonic);
+}
+
+async function key(mnemonic) {
+    return createKey(mnemonic);
 }
 
 module.exports = { key, mnemonic }
