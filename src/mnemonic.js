@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { toMnemonic, toEntropy } = require('@iacobus/bip39')
+const { bip39 } = require('@iacobus/bip39')
 const { wordlist } = require('@iacobus/bip39/wordlists/english');
 
 function generateEntropy() {
@@ -10,7 +10,7 @@ function generateEntropy() {
 
 function entropyToMnemonic(entropy) {
     const bits = entropy.slice(0, 154);
-    const result = toMnemonic(wordlist, bits);
+    const result = bip39.ext.toMnemonic(wordlist, bits);
 
     return result;
 }
@@ -46,7 +46,7 @@ function mnemonicToEntropy(mnemonicPhrase) {
     if (!mnemonicPhrase) {
         throw new Error(`Parameter 'mnemonicPhrase' is required.`)
     }
-    const result = toEntropy(wordlist, mnemonicPhrase);
+    const result = bip39.ent.toEntropy(wordlist, mnemonicPhrase);
 
     return result;
 }
